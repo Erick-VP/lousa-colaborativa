@@ -1,0 +1,16 @@
+name = "meu-worker-python"
+main = "worker.py" # O Worker principal em Python
+compatibility_date = "2025-10-09" # Use a data atual ou mais recente
+
+# Habilita o suporte a Python
+# (Pode ser necessário dependendo da versão do Wrangler)
+compatibility_flags = ["python_workers"]
+
+# Configuração do Durable Object
+[[durable_objects.bindings]]
+name = "WEBSOCKET_SERVER" # Nome da Binding que você usará no worker.py
+class_name = "WebSocketServer" # Nome da classe do Durable Object
+script_name = "websocket_do" # Nome do Worker que contém a classe (pode ser o mesmo, mas separe para clareza)
+
+# [imports]
+# websocket_do = "./do_websocket.py" # Se você usar um arquivo separado para o DO

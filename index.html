@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lousa Colaborativa</title>
+    <style>
+
+
+
+    body {
+        margin: 0;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+        font-family: 'Poppins', Arial, sans-serif;
+    }
+
+    h1 {
+        font-size: 3.5em;
+        text-align: center;
+        color: black;
+        text-shadow:
+            0 0 5px #0ff,
+            0 0 10px #0ff,
+            0 0 20px #0ff,
+            0 0 40px #00ffff,
+            0 0 80px #00ffff;
+        letter-spacing: 3px;
+        animation: neonPulse 2s infinite alternate;
+        margin-bottom: 25px;
+    }
+
+    @keyframes neonPulse {
+        from {
+            text-shadow:
+                0 0 5px #0ff,
+                0 0 10px #0ff,
+                0 0 20px #0ff,
+                0 0 40px #00ffff,
+                0 0 80px #00ffff;
+        }
+        to {
+            text-shadow:
+                0 0 2px #0ff,
+                0 0 5px #0ff,
+                0 0 10px #00ffff,
+                0 0 20px #00ffff;
+        }
+    }
+
+    .canvas-container {
+        position: relative;
+        box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+        border-radius: 15px;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+    }
+
+    canvas {
+        border: 2px solid #00ffff;
+        background-color: #101820;
+        cursor: crosshair;
+        border-radius: 10px;
+        display: block;
+    }
+
+    .toolbar {
+        position: absolute;
+        top: 25px;
+        left: 25px;
+        display: flex;
+        gap: 10px;
+        background: rgba(0, 255, 255, 0.1);
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    }
+
+    .tool-button {
+        width: 50px;
+        height: 50px;
+        border: 2px solid #00ffff;
+        border-radius: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        background-color: rgba(0, 255, 255, 0.05);
+        transition: all 0.3s ease;
+        color: #00ffff;
+    }
+
+    .tool-button:hover {
+        transform: scale(1.15);
+        box-shadow: 0 0 15px #00ffff;
+    }
+
+    .tool-button.active {
+        background-color: rgba(0, 255, 255, 0.2);
+        box-shadow: 0 0 25px #00ffff;
+    }
+
+        
+        .canvas-container {
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        canvas {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            cursor: crosshair;
+            border-radius: 5px;
+            display: block;
+        }
+        
+        canvas.eraser-mode {
+            cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" fill="pink" stroke="black" stroke-width="2"/></svg>') 12 12, auto;
+        }
+        
+        .toolbar {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            display: flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+.palette {
+  display:flex;
+  gap:8px;
+  margin-left:10px;
+  padding:6px;
+  border-radius:8px;
+  background: rgba(0,255,255,0.06);
+  align-items:center;
+}
+
+.color-swatch{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+  box-shadow: 0 0 6px rgba(0,0,0,0.25);
+}
+
+
+.color-swatch:hover{
+  transform: scale(1.15);
+  box-shadow: 0 0 12px var(--swatch-color);
+}
+
+.color-swatch.active{
+  border-color: #00ffff;
+  box-shadow: 0 0 14px var(--swatch-color), 0 0 20px #00ffff;
+  transform: scale(1.12);
+}
+
+        
+        .tool-button {
+            width: 50px;
+            height: 50px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .tool-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tool-button.active {
+            border-color: #4a90e2;
+            background-color: #e3f2fd;
+            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Lousa Colaborativa</h1>
+    <div class="canvas-container">
+
+        <div class="toolbar">
+            <button class="tool-button active" id="penBtn" title="Caneta">✏️</button>
+            <button class="tool-button" id="eraserBtn" title="Borracha">🧹</button>
+         
+<div class="palette" id="palette">
+    <div class="color-swatch" style="--swatch-color:#000000; background:var(--swatch-color)" data-color="#000000" aria-label="Preto"></div>
+    <div class="color-swatch" style="--swatch-color:#ff0000; background:var(--swatch-color)" data-color="#ff0000" aria-label="Vermelho"></div>
+    <div class="color-swatch" style="--swatch-color:#ffa500; background:var(--swatch-color)" data-color="#ffa500" aria-label="Laranja"></div>
+    <div class="color-swatch" style="--swatch-color:#ffff00; background:var(--swatch-color)" data-color="#ffff00" aria-label="Amarelo"></div>
+    <div class="color-swatch" style="--swatch-color:#008000; background:var(--swatch-color)" data-color="#008000" aria-label="Verde"></div>
+    <div class="color-swatch" style="--swatch-color:#00ffff; background:var(--swatch-color)" data-color="#00ffff" aria-label="Ciano"></div>
+    <div class="color-swatch" style="--swatch-color:#0000ff; background:var(--swatch-color)" data-color="#0000ff" aria-label="Azul"></div>
+    <div class="color-swatch" style="--swatch-color:#800080; background:var(--swatch-color)" data-color="#800080" aria-label="Roxo"></div>
+    <div class="color-swatch" style="--swatch-color:#ff00ff; background:var(--swatch-color)" data-color="#ff00ff" aria-label="Magenta"></div>
+    <div class="color-swatch" style="--swatch-color:#ffffff; background:var(--swatch-color); border:1px solid #ccc;" data-color="#ffffff" aria-label="Branco"></div>
+  </div>
+  
+
+
+        </div>
+        <canvas id="whiteboard"></canvas>
+    </div>
+    <script>
+        const canvas = document.getElementById('whiteboard');
+        const ctx = canvas.getContext('2d');
+        const penBtn = document.getElementById('penBtn');
+        const eraserBtn = document.getElementById('eraserBtn');
+        
+const palette = document.getElementById('palette');
+
+const swatches = document.querySelectorAll('.color-swatch');
+
+let currentColor = '#000000'; 
+ctx.strokeStyle = currentColor;
+
+swatches.forEach(swatch => {
+  swatch.addEventListener('click', () => {
+    
+    swatches.forEach(s => s.classList.remove('active'));
+
+    swatch.classList.add('active');
+    
+    currentColor = swatch.dataset.color;
+    
+    ctx.strokeStyle = currentColor;
+    
+    currentTool = 'pen';
+    penBtn.classList.add('active');
+    eraserBtn.classList.remove('active');
+  });
+});
+
+
+if (swatches.length) {
+  swatches[0].classList.add('active');
+  currentColor = swatches[0].dataset.color;
+  ctx.strokeStyle = currentColor;
+}
+
+
+        canvas.width = window.innerWidth * 0.8;
+        canvas.height = window.innerHeight * 0.9;
+
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let currentTool = 'pen';
+
+        ctx.lineWidth = 5;
+        ctx.lineCap = 'round';
+        ctx.strokeStyle = '#000';
+
+        const socket = new WebSocket('ws://localhost:8765');
+
+        socket.onopen = (event) => {
+            console.log('Conectado ao servidor WebSocket');
+        };
+
+        socket.onmessage = (event) => {
+            const message = JSON.parse(event.data);
+            if (message.type === 'history') {
+                message.data.forEach(drawSegment);
+            } else {
+                drawSegment(message);
+            }
+        };
+
+        socket.onclose = (event) => {
+            console.log('Desconectado do servidor WebSocket');
+        };
+
+        socket.onerror = (error) => {
+            console.error('Erro no WebSocket:', error);
+        };
+
+        function drawSegment(segment) {
+            if (segment.tool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = 20;
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.lineWidth = 5;
+            }
+            
+            ctx.beginPath();
+            ctx.moveTo(segment.prevX, segment.prevY);
+            ctx.lineTo(segment.currX, segment.currY);
+            ctx.stroke();
+            
+            
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.lineWidth = 5;
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            if (currentTool === 'eraser') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.lineWidth = 20;
+            } else {
+                ctx.globalCompositeOperation = 'source-over';
+                ctx.lineWidth = 5;
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(lastX, lastY);
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+
+            const data = {
+                prevX: lastX,
+                prevY: lastY,
+                currX: e.offsetX,
+                currY: e.offsetY,
+                tool: currentTool
+            };
+            socket.send(JSON.stringify(data));
+
+            lastX = e.offsetX;
+            lastY = e.offsetY;
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            lastX = e.offsetX;
+            lastY = e.offsetY;
+        });
+
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseout', () => isDrawing = false);
+
+        penBtn.addEventListener('click', () => {
+            currentTool = 'pen';
+            penBtn.classList.add('active');
+            eraserBtn.classList.remove('active');
+            canvas.classList.remove('eraser-mode');
+            canvas.style.cursor = 'crosshair';
+        });
+
+        eraserBtn.addEventListener('click', () => {
+            currentTool = 'eraser';
+            eraserBtn.classList.add('active');
+            penBtn.classList.remove('active');
+            canvas.classList.add('eraser-mode');
+        });
+    </script>
+</body>
+
+</html>
