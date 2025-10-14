@@ -277,29 +277,39 @@ if (swatches.length) {
         ctx.lineCap = 'round';
         ctx.strokeStyle = '#000';
 
-        const socket = new WebSocket('https://test-2-yns2.onrender.com');
+        let socket;
+        const serverUrl = 'wss://lousa-colaborativa-incrivel.onrender.com/'
 
-        socket.onopen = (event) => {
-            console.log('Conectado ao servidor WebSocket');
-        };
+        function connect() {
+            console.log('Connecting to WebSocket server...');
+            socket = new WebSocket(serverUrl);
 
-        socket.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            if (message.type === 'history') {
-                message.data.forEach(drawSegment);
-            } else {
-                drawSegment(message);
-            }
-        };
+            socket.onopen = (event) => {
+                console.log('Connected to WebSocket server');
+            };
 
-        socket.onclose = (event) => {
-            console.log('Desconectado do servidor WebSocket');
-        };
+            socket.onmessage = (event) => {
+                const message = JSON.parse(event.data);
+                if (message.type === 'history') {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    message.data.forEach(drawSegment(segment));
+                } else {
+                    drawSegment(message);
+                }
+            };
 
-        socket.onerror = (error) => {
-            console.error('Erro no WebSocket:', error);
-        };
+            socket.onclose = (event) => {
+                console.log('WebSocket connection closed. Reconnecting in 3 seconds...', event.reason);
+                setTimeout(connect, 3000);
+            };
 
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+                socket.close();
+            };
+        }
+
+        connect();
         function drawSegment(segment) {
             const originalStyle = ctx.strokeStyle;
             const originalWidth = ctx.lineWidth;
