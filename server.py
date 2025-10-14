@@ -50,18 +50,21 @@ async def server(websocket):
 
 async def main():
     """Função principal para iniciar o servidor"""
-
-    port = int(os.environ.get("PORT", 8765))
-    print(f"🚀 Iniciando servidor WebSocket em 0.0.0.0:{port}...")
-    # print(f"✅ Servidor rodando em ws://localhost:{port}")
+    
+    # ⚠️ MUDANÇAS AQUI ⚠️
+    port = int(os.environ.get("PORT", 8765))  # Usa porta do ambiente ou 8765
+    host = "0.0.0.0"  # ⚠️ IMPORTANTE: Mudar de "localhost" para "0.0.0.0"
+    
+    print("🚀 Iniciando servidor WebSocket...")
+    print(f"✅ Servidor rodando em ws://{host}:{port}")
     print("⏳ Aguardando conexões... (Ctrl+C para parar)\n")
-
-    async with websockets.serve(server, "0.0.0.0", port):
+    
+    # ⚠️ MUDANÇA AQUI TAMBÉM ⚠️
+    async with websockets.serve(server, host, port):
         await asyncio.Future()
 
 if __name__ == "__main__":
     try:
         asyncio.run(main())
     except KeyboardInterrupt:
-
         print("\n🛑 Servidor encerrado")
