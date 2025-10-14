@@ -1,6 +1,7 @@
 import asyncio
 import websockets
 import json
+import os
 
 connected = set()
 drawing_history = []
@@ -49,11 +50,13 @@ async def server(websocket):
 
 async def main():
     """Função principal para iniciar o servidor"""
-    print("🚀 Iniciando servidor WebSocket...")
-    print("✅ Servidor rodando em ws://localhost:8765")
+
+    port = int(os.environ.get("PORT", 8765))
+    print(f"🚀 Iniciando servidor WebSocket em 0.0.0.0:{port}...")
+    # print(f"✅ Servidor rodando em ws://localhost:{port}")
     print("⏳ Aguardando conexões... (Ctrl+C para parar)\n")
-    
-    async with websockets.serve(server, "localhost", 8765):
+
+    async with websockets.serve(server, "0.0.0.0", port):
         await asyncio.Future()
 
 if __name__ == "__main__":
